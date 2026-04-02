@@ -1,0 +1,190 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===================== LIGHT MODE — Static Squares ===================== */
+
+/* ===================== LIGHT MODE — Animated Squares ===================== */
+
+body {
+  background-color: #f5f3f7d0;
+  /* ← pehle #DFDBE5 tha — ab light */
+  background-image: none;
+  color: #1e293b;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-size: 32px 32px;
+  background-position: 0 0;
+  animation: squaresMove 15s linear infinite;
+  opacity: 0.4;
+  /* ← pehle 1 tha — ab 0.4 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.4' fill-rule='nonzero'%3E%3Cpath d='M6 18h12V6H6v12zM4 4h16v16H4V4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+@keyframes squaresMove {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 32px 32px;
+  }
+}
+
+/* ===================== DARK MODE — Animated Circles/Waves ===================== */
+
+.dark body {
+  background-color: #0a0f1e;
+  background-image: none;
+  color: #f1f5f9;
+}
+
+.dark body::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-size: 120px 120px;
+  background-position: 0 0, 60px 60px, 0 90px;
+  animation: patternMove 20s linear infinite;
+  opacity: 0.4;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect x='10' y='10' width='20' height='20' fill='none' stroke='%23334155' stroke-width='1.5' rx='2'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Ccircle cx='60' cy='60' r='10' fill='none' stroke='%23334155' stroke-width='1.5'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cpath d='M0,60 Q20,50 40,60 Q60,70 80,60 Q100,50 120,60' fill='none' stroke='%23334155' stroke-width='1.5'/%3E%3C/svg%3E");
+}
+
+@keyframes patternMove {
+  0% {
+    background-position: 0 0, 60px 60px, 0 90px;
+  }
+
+  100% {
+    background-position: 120px 120px, 180px 180px, 120px 210px;
+  }
+}
+
+/* ===================== ROOT ===================== */
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===================== SCROLLBAR ===================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+/* ===================== SELECTION ===================== */
+
+::selection {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+/* ===================== TRANSITIONS ===================== */
+
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ===================== TYPOGRAPHY ===================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.7;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===================== UTILITY ===================== */
+
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+@keyframes wave {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  20% {
+    transform: rotate(20deg);
+  }
+
+  40% {
+    transform: rotate(-10deg);
+  }
+
+  60% {
+    transform: rotate(20deg);
+  }
+
+  80% {
+    transform: rotate(-5deg);
+  }
+}
+
+.animate-wave {
+  animation: wave 2s infinite;
+  transform-origin: 70% 70%;
+  display: inline-block;
+}
