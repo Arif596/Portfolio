@@ -1,110 +1,220 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const skillCategories = [
   {
-    category: "Frontend",
-    icon: "🎨",
+    category: "Languages",
+    icon: "</>",
+    skills: ["JavaScript", "TypeScript", "C#"],
+  },
+  {
+    category: "Frameworks & Libraries",
+    icon: "{ }",
     skills: [
-      { name: "React.js", icon: "⚛️" },
-      { name: "Angular", icon: "🔺" },
-      { name: "JavaScript", icon: "🟨" },
-      { name: "TypeScript", icon: "🔷" },
-      { name: "Tailwind CSS", icon: "💨" },
-      { name: "Bootstrap", icon: "🅱️" },
-      { name: "HTML5", icon: "🧱" },
-      { name: "CSS3", icon: "🎨" },
+      "React.js", "Angular", "Node.js", "Express.js",
+      "ASP.NET Core", "Redux Toolkit", "Tailwind CSS",
+      "Bootstrap", "Axios", "Recharts",
     ],
   },
   {
-    category: "Backend",
-    icon: "⚙️",
-    skills: [
-      { name: "Node.js", icon: "🟢" },
-      { name: "Express.js", icon: "🚂" },
-      { name: "ASP.NET Core", icon: "🔵" },
-      { name: "REST APIs", icon: "🔗" },
-      { name: "MVC Architecture", icon: "🏗️" },
-      { name: "JWT Auth", icon: "🔐" },
-      { name: "bcrypt", icon: "🔒" },
-      { name: "Middleware", icon: "🧩" },
-    ],
+    category: "Databases",
+    icon: "[db]",
+    skills: ["PostgreSQL", "MongoDB", "SQL Server", "Neon"],
   },
   {
-    category: "Database",
-    icon: "🗄️",
-    skills: [
-      { name: "PostgreSQL", icon: "🐘" },
-      { name: "MongoDB", icon: "🍃" },
-      { name: "SQL Server", icon: "🗃️" },
-      { name: "Neon", icon: "💡" },
-    ],
+    category: "Cloud Technologies",
+    icon: "~//",
+    skills: ["Cloudinary", "Netlify", "Render", "Vercel"],
   },
   {
-    category: "Tools & Services",
-    icon: "🛠️",
-    skills: [
-      { name: "Git & GitHub", icon: "🐙" },
-      { name: "Redux Toolkit", icon: "🔄" },
-      { name: "Stripe", icon: "💳" },
-      { name: "Cloudinary", icon: "☁️" },
-      { name: "Twilio", icon: "📱" },
-      { name: "Nodemailer", icon: "📧" },
-      { name: "Axios", icon: "📡" },
-      { name: "Vite", icon: "⚡" },
-      { name: "Clerk", icon: "👤" },
-      { name: "Recharts", icon: "📊" },
-      { name: "AJAX & jQuery", icon: "✨" },
-      { name: "Netlify / Render", icon: "🚀" },
-    ],
+    category: "Tools",
+    icon: "###",
+    skills: ["Git & GitHub", "Postman", "VSCode", "Stripe", "Twilio", "Nodemailer", "JWT", "bcrypt"],
   },
 ];
 
-function Skills() {
+function SkillCard({ cat, index }) {
+  const [visible, setVisible] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setVisible(true), index * 100);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [index]);
+
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16">
-      {/* Section Header */}
-      <div className="text-center mb-12">
-        <p className="text-sm font-semibold text-purple-500 uppercase tracking-widest mb-2">
-          What I Work With
-        </p>
-        <h2 className="text-4xl font-bold text-gray-900 dark:text-white">
-          My{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500">
-            Skills
-          </span>
-        </h2>
-        <div className="mt-3 mx-auto w-16 h-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
+    <div
+      ref={ref}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.5s ease, transform 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease`,
+        boxShadow: hovered
+          ? "4px 4px 0px 0px rgba(168,85,247,0.35)"
+          : "2px 2px 0px 0px rgba(168,85,247,0.1)",
+      }}
+      className={`
+        border bg-transparent flex flex-col
+        transition-all duration-300
+        ${hovered
+          ? "border-purple-500"
+          : "border-gray-400 dark:border-gray-700"
+        }
+      `}
+    >
+      {/* Card Header */}
+      <div
+        className={`
+          px-4 py-3 flex items-center justify-between
+          border-b transition-colors duration-300
+          ${hovered
+            ? "border-purple-500 bg-purple-500/5 dark:bg-purple-500/10"
+            : "border-gray-400 dark:border-gray-700"
+          }
+        `}
+      >
+        <h3 className="text-gray-900 dark:text-white font-bold font-mono text-sm tracking-wide">
+          {cat.category}
+        </h3>
+        <span
+          className={`
+            font-mono text-[10px] font-bold px-1.5 py-0.5
+            transition-colors duration-300
+            ${hovered
+              ? "text-purple-600 dark:text-purple-400"
+              : "text-gray-500 dark:text-gray-600"
+            }
+          `}
+        >
+          {cat.icon}
+        </span>
       </div>
 
-      {/* Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {skillCategories.map((cat, i) => (
-          <div
-            key={i}
-            className="border border-default rounded-xl p-6 bg-neutral-primary-soft shadow-sm hover:shadow-md transition-shadow duration-300"
+      {/* Skills */}
+      <div className="px-4 py-4 flex flex-wrap gap-2">
+        {cat.skills.map((skill, j) => (
+          <span
+            key={j}
+            style={{ transitionDelay: `${j * 30}ms` }}
+            className={`
+              font-mono text-[11px] font-semibold px-2 py-1
+              border transition-all duration-200
+              ${hovered
+                ? "border-purple-400 text-purple-700 dark:text-purple-300 bg-purple-500/5 dark:bg-purple-500/10"
+                : "border-gray-400 dark:border-gray-600 text-gray-700 dark:text-gray-400"
+              }
+              hover:border-purple-500 hover:text-purple-600 dark:hover:text-purple-300
+            `}
           >
-            {/* Category Title */}
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-xl">{cat.icon}</span>
-              <h3 className="text-lg font-bold text-heading tracking-tight">
-                {cat.category}
-              </h3>
-            </div>
-
-            {/* Skill Chips */}
-            <div className="flex flex-wrap gap-2">
-              {cat.skills.map((skill, j) => (
-                <span
-                  key={j}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-softer text-fg-brand-strong border border-brand-subtle shadow-xs hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 cursor-default"
-                >
-                  <span>{skill.icon}</span>
-                  {skill.name}
-                </span>
-              ))}
-            </div>
-          </div>
+            {skill}
+          </span>
         ))}
+      </div>
+
+      {/* Bottom count */}
+      <div className="mt-auto px-4 pb-3">
+        <p
+          className={`
+            font-mono text-[10px] font-bold tracking-widest uppercase
+            transition-colors duration-300
+            ${hovered ? "text-purple-500" : "text-gray-400 dark:text-gray-700"}
+          `}
+        >
+          {cat.skills.length} skills
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Skills() {
+  const [headerVisible, setHeaderVisible] = useState(false);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setHeaderVisible(true); },
+      { threshold: 0.1 }
+    );
+    if (headerRef.current) observer.observe(headerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="max-w-7xl mx-auto px-6 py-16">
+
+      {/* Header */}
+      <div
+        ref={headerRef}
+        style={{
+          opacity: headerVisible ? 1 : 0,
+          transform: headerVisible ? "translateY(0)" : "translateY(16px)",
+          transition: "opacity 0.6s ease, transform 0.6s ease",
+        }}
+        className="flex items-center gap-4 mb-16"
+      >
+        <h2 className="text-2xl font-bold text-purple-500 font-mono whitespace-nowrap">
+          #skills
+        </h2>
+        <div className="h-px bg-purple-500 w-64" />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-10">
+
+        {/* Left — Decorative */}
+        <div className="hidden md:block relative w-56 flex-shrink-0">
+
+          {/* Dot grid top */}
+          <div className="absolute top-0 left-0 grid grid-cols-5 gap-2">
+            {Array(25).fill(0).map((_, i) => (
+              <div
+                key={i}
+                className="w-1 h-1 rounded-full bg-gray-400 dark:bg-gray-600 opacity-60"
+              />
+            ))}
+          </div>
+
+          {/* Dot grid mid */}
+          <div className="absolute top-28 left-16 grid grid-cols-5 gap-2">
+            {Array(25).fill(0).map((_, i) => (
+              <div
+                key={i}
+                className="w-1 h-1 rounded-full bg-gray-400 dark:bg-gray-600 opacity-40"
+              />
+            ))}
+          </div>
+
+          {/* Geometric squares */}
+          <div className="absolute top-6 left-24 w-20 h-20 border border-gray-400 dark:border-gray-600 opacity-60" />
+          <div className="absolute top-44 left-4 w-16 h-16 border-2 border-purple-500 opacity-50" />
+          <div className="absolute top-48 left-8 w-16 h-16 border border-purple-400 opacity-25" />
+          <div className="absolute top-64 left-24 w-12 h-12 border border-gray-400 dark:border-gray-600 opacity-40" />
+
+          {/* Purple accent corner */}
+          <div className="absolute top-4 left-22 w-5 h-5 border-t-2 border-l-2 border-purple-500 opacity-80" />
+          <div className="absolute top-[168px] left-2 w-4 h-4 border-b-2 border-r-2 border-purple-400 opacity-70" />
+
+          {/* Vertical line */}
+          <div className="absolute left-2 top-20 h-28 w-px bg-gradient-to-b from-transparent via-purple-500/50 to-transparent" />
+        </div>
+
+        {/* Right — Skill cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 flex-1">
+          {skillCategories.map((cat, i) => (
+            <SkillCard key={i} cat={cat} index={i} />
+          ))}
+        </div>
+
       </div>
     </section>
   );
